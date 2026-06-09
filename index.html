@@ -400,13 +400,15 @@
       transition: transform 0.35s ease; line-height: 1;
     }
     .faq-item.open .faq-plus { transform: rotate(45deg); }
-    /* grid-template-rows アニメーション（max-height hack不要） */
+    /* grid-template-rows アニメーション */
     .faq-a {
       display: grid; grid-template-rows: 0fr;
       transition: grid-template-rows 0.45s ease;
     }
     .faq-item.open .faq-a { grid-template-rows: 1fr; }
-    .faq-a-inner { overflow: hidden; min-height: 0; padding: 0 0 26px; font-size: 14px; color: #595959; line-height: 1.95; }
+    /* grid アイテムは padding なし（padding があると 0fr でも最小高さが残る） */
+    .faq-a-inner { overflow: hidden; min-height: 0; }
+    .faq-a-inner-text { padding: 0 0 26px; font-size: 14px; color: #595959; line-height: 1.95; }
 
     /* ─── BOOKING CTA ─── */
     #booking {
@@ -761,35 +763,35 @@
           <span class="t" data-key="faq1_q">チェックイン・チェックアウトは何時ですか？</span>
           <span class="faq-plus" aria-hidden="true">+</span>
         </button>
-        <div class="faq-a"><div class="faq-a-inner t" data-key="faq1_a">チェックインは15時、チェックアウトは10時です。アーリーチェックイン・レイトチェックアウトは都度ご相談ください。</div></div>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-inner-text t" data-key="faq1_a">チェックインは15時、チェックアウトは10時です。アーリーチェックイン・レイトチェックアウトは都度ご相談ください。</div></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
           <span class="t" data-key="faq2_q">チェックイン前の荷物預かりは可能ですか？</span>
           <span class="faq-plus" aria-hidden="true">+</span>
         </button>
-        <div class="faq-a"><div class="faq-a-inner t" data-key="faq2_a">状況に応じて判断をさせていただきます。ご予約時にお問い合わせください。</div></div>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-inner-text t" data-key="faq2_a">状況に応じて判断をさせていただきます。ご予約時にお問い合わせください。</div></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
           <span class="t" data-key="faq3_q">近隣にスーパーやコンビニはありますか？</span>
           <span class="faq-plus" aria-hidden="true">+</span>
         </button>
-        <div class="faq-a"><div class="faq-a-inner t" data-key="faq3_a">はい、ございます。徒歩圏内にスーパーマーケットと複数のコンビニエンスストアがあり、ご家族での自炊や急な買い出しにも大変便利です。</div></div>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-inner-text t" data-key="faq3_a">はい、ございます。徒歩圏内にスーパーマーケットと複数のコンビニエンスストアがあり、ご家族での自炊や急な買い出しにも大変便利です。</div></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
           <span class="t" data-key="faq4_q">Wi-Fiはありますか？速度は？</span>
           <span class="faq-plus" aria-hidden="true">+</span>
         </button>
-        <div class="faq-a"><div class="faq-a-inner t" data-key="faq4_a">はい、高速Wi-Fiを完備しています。テレワークや動画視聴にも十分な速度です。</div></div>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-inner-text t" data-key="faq4_a">はい、高速Wi-Fiを完備しています。テレワークや動画視聴にも十分な速度です。</div></div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
           <span class="t" data-key="faq5_q">何名まで宿泊できますか？</span>
           <span class="faq-plus" aria-hidden="true">+</span>
         </button>
-        <div class="faq-a"><div class="faq-a-inner t" data-key="faq5_a">Airbnbのリスティングに記載の定員をご確認ください。ダブルベッド2台を備えており、カップルや小グループに最適です。</div></div>
+        <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-inner-text t" data-key="faq5_a">Airbnbのリスティングに記載の定員をご確認ください。ダブルベッド2台を備えており、カップルや小グループに最適です。</div></div></div>
       </div>
     </div>
   </div>
