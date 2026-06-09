@@ -437,6 +437,9 @@
     .footer-addr { font-size: 13px; line-height: 2.1; margin-bottom: 28px; }
     .footer-copy { font-size: 11px; letter-spacing: 0.1em; }
 
+    /* デスクトップではモバイル専用アイテムを非表示 */
+    .mobile-book-item { display: none; }
+
     /* ─── MOBILE NAV ─── */
     @media (max-width: 960px) {
       #nav { padding: 18px 24px; }
@@ -453,7 +456,7 @@
       .nav-links.open li { border-bottom: 1px solid var(--border); }
       .nav-links.open a { color: var(--text); padding: 14px 0; display: block; font-size: 14px; }
       /* モバイルメニュー内の予約ボタン */
-      .nav-links.open .mobile-book-item { border-bottom: none; padding-top: 8px; }
+      .nav-links.open .mobile-book-item { display: block; border-bottom: none; padding-top: 8px; }
       .nav-links.open .mobile-book-link {
         display: block; text-align: center;
         background: var(--accent); color: white;
@@ -484,7 +487,7 @@
 <body>
 
 <!-- ─── NAVIGATION ─── -->
-<nav id="nav">
+<nav id="nav" aria-label="メインナビゲーション">
   <a href="#" class="nav-logo">O.K HOUSE</a>
   <div class="nav-right">
     <ul class="nav-links" id="nav-links">
@@ -510,6 +513,9 @@
     </button>
   </div>
 </nav>
+
+<!-- ─── MAIN ─── -->
+<main id="main-content">
 
 <!-- ─── HERO ─── -->
 <section class="hero">
@@ -638,7 +644,7 @@
 </section>
 
 <!-- ─── LIGHTBOX ─── -->
-<div id="lightbox" role="dialog" aria-modal="true" aria-label="画像ビューア">
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="画像ビューア" tabindex="-1">
   <button id="lightbox-close" aria-label="閉じる">✕</button>
   <button class="lb-nav" id="lb-prev" aria-label="前の画像">‹</button>
   <img id="lightbox-img" src="" alt="">
@@ -800,12 +806,14 @@
   </div>
 </section>
 
+</main><!-- end #main-content -->
+
 <!-- ─── FOOTER ─── -->
 <footer>
   <div class="container">
     <div class="footer-logo">O.K HOUSE</div>
     <p class="footer-addr t" data-key="footer_addr">〒532-0011 大阪市淀川区西中島4-5-19-301<br>大阪メトロ御堂筋線 西中島南方駅 徒歩3分</p>
-    <p class="footer-copy">© 2024 O.K HOUSE. All rights reserved.</p>
+    <p class="footer-copy">© 2024–2026 O.K HOUSE. All rights reserved.</p>
   </div>
 </footer>
 
@@ -1126,23 +1134,37 @@ const lightbox = document.getElementById('lightbox');
 const lbImg = document.getElementById('lightbox-img');
 const lbCounter = document.getElementById('lb-counter');
 let curImg = 0;
+let lbOpener = null; // フォーカス戻し用
 
-function openLightbox(i) {
+function openLightbox(i, triggerEl) {
   curImg = i;
   lbImg.src = galleryImgs[i].src.replace(/\?.*/, '');
   lbImg.alt = galleryImgs[i].alt;
   lbCounter.textContent = `${i + 1} / ${galleryImgs.length}`;
   lightbox.classList.add('open');
   document.body.style.overflow = 'hidden';
+  if (triggerEl) lbOpener = triggerEl;
   // フォーカスを閉じるボタンへ移動
   document.getElementById('lightbox-close').focus();
 }
 function closeLightbox() {
   lightbox.classList.remove('open');
   document.body.style.overflow = '';
+  // フォーカスを開いたギャラリーアイテムへ戻す
+  if (lbOpener) { lbOpener.focus(); lbOpener = null; }
 }
 
-galleryImgs.forEach((img, i) => img.closest('.g-item').addEventListener('click', () => openLightbox(i)));
+galleryImgs.forEach((img, i) => {
+  const item = img.closest('.g-item');
+  // キーボードアクセシビリティ
+  item.setAttribute('tabindex', '0');
+  item.setAttribute('role', 'button');
+  item.setAttribute('aria-label', `画像 ${i + 1} を拡大表示`);
+  item.addEventListener('click', () => openLightbox(i, item));
+  item.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i, item); }
+  });
+});
 document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
 document.getElementById('lb-prev').addEventListener('click', () => openLightbox((curImg - 1 + galleryImgs.length) % galleryImgs.length));
 document.getElementById('lb-next').addEventListener('click', () => openLightbox((curImg + 1) % galleryImgs.length));
